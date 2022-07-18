@@ -58,9 +58,7 @@ fi
 
 # Get git branch if its present to PS1
 is_branch_in_edit() {
-  if [[ $(git status -s 2> /dev/null ) ]]; then
-    echo "*"
-  fi
+  (IFS=$'\n' && VB=( $(git status -bs 2> /dev/null) ) && if [[ ${#VB[@]} > 1 ]]; then echo "*"; else echo ${VB[0]} | grep "\[ahead" > /dev/null && echo "^"; fi)
 }
 
 parse_git_branch() {
@@ -134,3 +132,4 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
